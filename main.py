@@ -5,13 +5,13 @@ from machine import Pin, I2C
 import time, os
 
 #定数
-I2c1_pinsda = 0  # PSG1用のSDA向け物理ピン
-I2c1_pinscl = 1  # PSG1用のSCL向け物理ピン
-I2c2_pinsda = 2  # PSG2個め or SSC用のSDA向け物理ピン
-I2c2_pinscl = 3  # PSG2個め or SSC用のSCL向け物理ピン
+I2c1_pinsda = 0  # PSG1用のSDA向けGPIO 物理1ピン
+I2c1_pinscl = 1  # PSG1用のSCL向けGPIO 物理2ピン
+I2c2_pinsda = 2  # PSG2個め or SSC用のSDA向けGPIO 物理4ピン
+I2c2_pinscl = 3  # PSG2個め or SSC用のSCL向けGPIO 物理5ピン
 I2c_freq = 3000000 #I2Cの周波数
 Sample_delay = 23 # 1サンプル ≠ 23マイクロ秒 (1Msec/44.1K sample)
-Num_loops = 3     # ループは1回 / 0にするとループしない
+Num_loops = 1     # ループは1回 / 0にするとループしない
 
 #グローバル変数です　（*´∀｀*）
 Read_pointer = 0
