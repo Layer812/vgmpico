@@ -1,4 +1,4 @@
-# picovgm: Pico Vgmplayer for "SoundCortexChip by Toyoshima-san<toyoshim@gmail.com>"
+# vgmpico: Pico Vgmplayer for "SoundCortexChip by Toyoshima-san"
 # Copyright 2022, Layer8 https://twitter.com/layer812
 # Licensed under the Apache License, Version 2.0
 from machine import Pin, I2C
