@@ -1,10 +1,28 @@
 # vgmpico
 [Raspberry PICO](https://www.switch-science.com/catalog/6900/)向けの[VGMファイル](https://www.jpedia.wiki/blog/en/VGM_(file_format))簡易プレイヤーです。<br>
-PSG(AY-3-8910やYMZ294)２個か、PSG１個とSSC(K051649)１個向けに作られたVGMファイルを鳴らすことができます。<br>
+## 1.PSG(AY-3-8910やYMZ294)1個向けに作られたVGMファイルをPWMで鳴らすことが出来ます。<br>
+### 使うもの
+ - Raspbery pico(以降Pico) 1個
+ - ブレッドボード
+ - 小型スピーカまたはイヤホン
+ - ジャンパ線適宜
+ 
+### 設定
+firmware.uf2をPicoにアップロードします
+main.pyの以下の行を変更します
+16行目: Pwm_enabled (Trueにすると有効)
+17行目: Pwm_pin = 26 (スピーカー(+)を接続するピン)
+
+### つなぎ方
+1.以下の様に物理結線を行います。<br> 
+ - Picoの3.3V OUT (物理36ピン)をLPC810の6ピンに接続
+ - PicoのGND (物理38ピンなど)をLPC810の7ピンに接続
+ - イヤホンやアンプのGND端子にPicoのGND (物理38ピンなど)を接続
+ - イヤホンやアンプのAudio端子に26ピンを接続
+
+## 2.PSG(AY-3-8910やYMZ294)２個か、PSG１個とSSC(K051649)１個向けに作られたVGMファイルを鳴らすことができます。<br>
 音源チップとして[とよしまさん](https://twitter.com/toyoshim)が作られた[SoundCortexLPC](https://github.com/toyoshim/SoundCortexLPC)を使います。<br>
-
-
-## 使うもの
+### 使うもの
  - Raspbery pico(以降Pico) 1個
  - LPC810 2個
  - プルアップ用抵抗(2～10KΩ) 4本
@@ -12,7 +30,11 @@ PSG(AY-3-8910やYMZ294)２個か、PSG１個とSSC(K051649)１個向けに作ら
  - 小型スピーカまたはイヤホン
  - ジャンパ線適宜
 
-## つなぎ方
+### 設定
+main.pyの以下の行を変更します
+10行目: Scc_enabled (Trueにすると有効)
+
+### つなぎ方
 1.[I2Cで制御できる80円のPSG互換チップで遊ぼう](https://qiita.com/toyoshim/items/22a173d267f3c90fe36f)を基に、LPC810にSoundCoretexLPCを焼きます。<br>
 2.Pico１個とLPC810２個をブレッドボードに刺します。<br>
 3.以下の様に物理結線を行います。<br> 
