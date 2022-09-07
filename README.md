@@ -8,10 +8,10 @@
  - ジャンパ線適宜
  
 ### 設定
-firmware.uf2をPicoにアップロードします
-main.pyの以下の行を変更します
-16行目: Pwm_enabled (Trueにすると有効)
-17行目: Pwm_pin = 26 (スピーカー(+)を接続するピン)
+firmware.uf2をPicoにアップロードします<br>
+main.pyの以下の行を変更します<br>
+16行目: Pwm_enabled (Trueにすると有効)<br>
+17行目: Pwm_pin = 26 (スピーカー(+)を接続するピン)<br>
 
 ### つなぎ方
 1.以下の様に物理結線を行います。<br> 
