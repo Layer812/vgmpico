@@ -1,5 +1,7 @@
 # vgmpico
 [Raspberry PICO](https://www.switch-science.com/catalog/6900/)向けの[VGMファイル](https://www.jpedia.wiki/blog/en/VGM_(file_format))簡易プレイヤーです。<br>
+Pico単体で音を鳴らす機能と、SSC(SoundCoretexChip)を鳴らす機能の２つを併せ持っています。<br>
+
 ## 1.PSG(AY-3-8910やYMZ294)2個向けに作られたVGMファイルをPWMで鳴らすことが出来ます。<br>
 ### 使うもの
  - Raspbery pico(以降Pico) 1個
@@ -16,6 +18,8 @@ Pwm_pin = 27 (スピーカー(+)を接続するピン)<br>
 1.以下の様に物理結線を行います。<br> 
  - イヤホンやスピーカのGND端子にPicoのGND (物理38ピンなど)を接続
  - イヤホンやスピーカのAudio端子に26ピンと27ピンを接続(短絡防止のため抵抗を挟むと良い説有)
+![接続図](https://user-images.githubusercontent.com/111331376/189489764-80342a3c-8d08-4ac3-8800-2fcdb988d3fd.png)
+
 
 ## 2.PSG(AY-3-8910やYMZ294)2個か、PSG１個とSSC(K051649)１個向けに作られたVGMファイルを鳴らすことができます。<br>
 音源チップとして[とよしまさん](https://twitter.com/toyoshim)が作られた[SoundCortexLPC](https://github.com/toyoshim/SoundCortexLPC)を使います。<br>
