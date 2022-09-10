@@ -7,11 +7,11 @@
  - 小型スピーカまたはイヤホン
  - ジャンパ線適宜
 ### 設定
-firmware.uf2をPicoにアップロードします
-main.pyの以下の行を変更します
-Pwm_enabled (Trueにすると有効)
-Pwm_pin = 26 (スピーカー(+)を接続するピン)
-Pwm_pin = 27 (スピーカー(+)を接続するピン)
+firmware.uf2をPicoにアップロードします<br>
+main.pyの以下の行を変更します<br>
+Pwm_enabled (Trueにすると有効)<br>
+Pwm_pin = 26 (スピーカー(+)を接続するピン)<br>
+Pwm_pin = 27 (スピーカー(+)を接続するピン)<br>
 ### つなぎ方
 1.以下の様に物理結線を行います。<br> 
  - イヤホンやスピーカのGND端子にPicoのGND (物理38ピンなど)を接続
@@ -27,8 +27,8 @@ Pwm_pin = 27 (スピーカー(+)を接続するピン)
  - 小型スピーカまたはイヤホン
  - ジャンパ線適宜
 ### 設定
-main.pyの以下の行を変更します
-10行目: Scc_enabled (Trueにすると有効)
+main.pyの以下の行を変更します<br>
+Scc_enabled (Trueにすると有効)<br>
 ### つなぎ方
 1.[I2Cで制御できる80円のPSG互換チップで遊ぼう](https://qiita.com/toyoshim/items/22a173d267f3c90fe36f)を基に、LPC810にSoundCoretexLPCを焼きます。<br>
 2.Pico１個とLPC810２個をブレッドボードに刺します。<br>
