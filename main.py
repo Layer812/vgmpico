@@ -1,4 +1,4 @@
-# vgmpico: Pico Vgmplayer for "SoundCortexChip by Toyoshima-san"
+# vgmpico: Pico Vgmplayer for "SoundCortexChip by Toyoshima-san" and PwmPSG
 # Copyright 2022, Layer8 https://twitter.com/layer812
 # Licensed under the Apache License, Version 2.0
 from machine import Pin, I2C
@@ -6,20 +6,21 @@ import vgmpico
 import time, os
 import rp2
 
-#定数
+#SoundCoretexChipを鳴らす設定
 Scc_enabled = False
 I2c1_pinsda = 0  # PSG1用のSDA向けGPIO 物理1ピン
 I2c1_pinscl = 1  # PSG1用のSCL向けGPIO 物理2ピン
 I2c2_pinsda = 2  # PSG2個め or SSC用のSDA向けGPIO 物理4ピン
 I2c2_pinscl = 3  # PSG2個め or SSC用のSCL向けGPIO 物理5ピン
 
+#PWMでPSG等を鳴らす設定
 Pwm_enabled = True
-Pwm_pin = 26
+Pwm_pin1 = 26  #スピーカの+ピンを繋ぐGPIOピン番号 -1にすると無効
+Pwm_pin2 = 27  #スピーカの+ピンを繋ぐGPIOピン番号 -1にすると無効
 
 I2c_freq = 3000000 #I2Cの周波数
-Sample_delay = 22 # 1サンプル ≠ 22マイクロ秒 (1Msec/44.1K sample)
+Sample_delay = 22676 # 1000サンプル ≠ 22676マイクロ秒 (1Msec/44.1K sample)
 Num_loops = 1     # ループは1回 / 0にするとループしない
-
 
 #グローバル変数です　（*´∀｀*）
 Read_pointer = 0
@@ -57,15 +58,16 @@ def playvgmdata(vgm_data):
     playcounter = Num_loops + 1 if Loop_offset > 0 and Num_loops > 0 else 1
     while playcounter > 0:
         sample_wait = 0
+        start_time = time.ticks_us()
         vgm_command = vgm_data[Read_pointer]
         if vgm_command == 0xA0: # PSG
+            pwmw(vgm_data[Read_pointer+1], vgm_data[Read_pointer+2])
             if vgm_data[Read_pointer+1] < 0x80:
                 i2cw(0x50, vgm_data[Read_pointer+1:Read_pointer+3])
-                pwmw(vgm_data[Read_pointer+1:Read_pointer+3], 0)
             else:
                 buff[0] = vgm_data[Read_pointer+1] - 0x80
                 buff[1] = vgm_data[Read_pointer+2]
-                i2cw(0x50, buff)
+                i2cw(0x51, buff)
             Read_pointer += 3
         elif vgm_command == 0xD2: # Konami SSC
             if vgm_data[Read_pointer+1] == 0:
@@ -100,7 +102,12 @@ def playvgmdata(vgm_data):
         else:
             break;
         if sample_wait > 0:
-            time.sleep_us(sample_wait * Sample_delay)
+            #サンプル分の時間が経過するまで待つ
+            delay_time = int(sample_wait * Sample_delay / 1000)
+            current_time = time.ticks_us()
+            while time.ticks_diff(current_time, start_time) < delay_time:
+                time.sleep_us(1)
+                current_time = time.ticks_us()
     #演奏終わったらミュート
     muteall()
 
@@ -111,7 +118,7 @@ if Scc_enabled:
 
 # PWMに使うピンを初期化
 if Pwm_enabled:
-    vgmpico.init(Pwm_pin, -1)
+    vgmpico.init(Pwm_pin1, Pwm_pin2)
 
 #main.pyと同じディレクトリにあるvgmファイルを全部再生
 for file in os.listdir('/'):
@@ -123,4 +130,3 @@ for file in os.listdir('/'):
             continue
         playvgmdata(vgm_data)
         del vgm_data
-
