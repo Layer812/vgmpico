@@ -6,19 +6,16 @@
  - ブレッドボード
  - 小型スピーカまたはイヤホン
  - ジャンパ線適宜
- 
 ### 設定
-firmware.uf2をPicoにアップロードします<br>
-main.pyの以下の行を変更します<br>
-16行目: Pwm_enabled (Trueにすると有効)<br>
-17行目: Pwm_pin = 26 (スピーカー(+)を接続するピン)<br>
-
+firmware.uf2をPicoにアップロードします
+main.pyの以下の行を変更します
+Pwm_enabled (Trueにすると有効)
+Pwm_pin = 26 (スピーカー(+)を接続するピン)
+Pwm_pin = 27 (スピーカー(+)を接続するピン)
 ### つなぎ方
 1.以下の様に物理結線を行います。<br> 
- - Picoの3.3V OUT (物理36ピン)をLPC810の6ピンに接続
- - PicoのGND (物理38ピンなど)をLPC810の7ピンに接続
- - イヤホンやアンプのGND端子にPicoのGND (物理38ピンなど)を接続
- - イヤホンやアンプのAudio端子に26ピンを接続
+ - イヤホンやスピーカのGND端子にPicoのGND (物理38ピンなど)を接続
+ - イヤホンやスピーカのAudio端子に26ピンと27ピンを接続(短絡防止のため抵抗を挟むと良い説有)
 
 ## 2.PSG(AY-3-8910やYMZ294)２個か、PSG１個とSSC(K051649)１個向けに作られたVGMファイルを鳴らすことができます。<br>
 音源チップとして[とよしまさん](https://twitter.com/toyoshim)が作られた[SoundCortexLPC](https://github.com/toyoshim/SoundCortexLPC)を使います。<br>
@@ -29,11 +26,9 @@ main.pyの以下の行を変更します<br>
  - ブレッドボード
  - 小型スピーカまたはイヤホン
  - ジャンパ線適宜
-
 ### 設定
 main.pyの以下の行を変更します
 10行目: Scc_enabled (Trueにすると有効)
-
 ### つなぎ方
 1.[I2Cで制御できる80円のPSG互換チップで遊ぼう](https://qiita.com/toyoshim/items/22a173d267f3c90fe36f)を基に、LPC810にSoundCoretexLPCを焼きます。<br>
 2.Pico１個とLPC810２個をブレッドボードに刺します。<br>
@@ -49,7 +44,7 @@ main.pyの以下の行を変更します
 ![接続図](https://user-images.githubusercontent.com/111331376/186407765-80e2dc41-8b9d-4329-b2ba-1962ad221c98.png)
 
 
-## 使い方
+## 使い方(共通)
  - VGMファイルがvgz形式の場合、7zipやgzipなどで展開しvgm形式にする
  - [Thonny](https://thonny.org/)などを使い、main.pyと上記vgmファイルを同じディレクトリに転送する
  - Thonnyの実行を押すか、再起動するとmain.pyと同じディレクトリのvgmファイルが読み込まれ、再生が始まる
@@ -59,7 +54,7 @@ main.pyの以下の行を変更します
  - ループ回数はソース内の定数部分に有ります。
  - 読み込めるVGMファイルサイズは160Kbyte位までです。
  - 音が小さいのでアンプを繋ぐと良いです。耳が若い人向けにはローパスフィルタもおすすめです。
- - Picoのタイマ分解能の関係で1サンプルが0.33マイクロ秒くらい遅いです（*´∀｀*）
+ - firmware.uf2に含むPwmPSGの実装は[とよしまさん](https://twitter.com/toyoshim)及び[boochowpさん](https://twitter.com/boochowp)のコードをパ..参考にしています。
  - 本記事内容及びプログラムを使用したことにより発生する、いかなる損害も補償しません。
 
 ## ライセンス
