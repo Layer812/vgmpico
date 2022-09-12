@@ -61,5 +61,9 @@ Scc_enabled (Trueにすると有効)<br>
  - firmware.uf2に含むPwmPSGの実装は[とよしまさん](https://twitter.com/toyoshim)及び[boochowpさん](https://twitter.com/boochowp)のコードをパ..参考にしています。
  - 本記事内容及びプログラムを使用したことにより発生する、いかなる損害も補償しません。
 
+## Thanks to
+ - [SoundCortexLPC](https://github.com/toyoshim/SoundCortexLPC) 音楽も懐かしハードもソフトもスパコンも...凄い
+ - [楽しくやろう。](https://blog.boochow.com/) 天才
+
 ## ライセンス
  [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0)に基づいてご利用ください。ご連絡は[layer8](https://twitter.com/layer812)までお願いします。
