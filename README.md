@@ -45,7 +45,7 @@ Scc_enabled (Trueにすると有効)<br>
  - PicoのGP3 (物理5ピン)を2個目のLPC810の1ピンに接続、併せて2～10KΩの抵抗経由で3.3Vにも接続
  - イヤホンやアンプのGND端子にPicoのGND (物理38ピンなど)を接続
  - イヤホンやアンプのAudio端子に1個目と2個目のLPC810の2ピンを接続、100Ω以下の抵抗を経由すると良い説有
-![接続図](https://user-images.githubusercontent.com/111331376/186407765-80e2dc41-8b9d-4329-b2ba-1962ad221c98.png)
+![接続図](https://user-images.githubusercontent.com/111331376/192802217-1ed78231-4e38-4734-90ca-1302198bd58a.png)
 
 
 ## 使い方(共通)
