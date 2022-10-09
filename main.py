@@ -7,7 +7,7 @@ import time, os
 import rp2
 
 #SoundCoretexChipを鳴らす設定
-Scc_enabled = False
+Scc_enabled = 0  # SCCは繋がっていれば使います
 I2c1_pinsda = 0  # PSG1用のSDA向けGPIO 物理1ピン
 I2c1_pinscl = 1  # PSG1用のSCL向けGPIO 物理2ピン
 I2c2_pinsda = 2  # PSG2個め or SSC用のSDA向けGPIO 物理4ピン
@@ -27,10 +27,12 @@ Read_pointer = 0
 Loop_offset = 0
 Clock_value = 0
 
-def i2cw(addr, data):
-    if Scc_enabled:
-         i2c2.writeto(addr, data)
- 
+def i2cw(port, addr, data):
+    if port == 1 & Scc_enabled > 0:
+        i2c1.writeto(addr, data)
+    elif port == 2 & Scc_enabled > 1:
+        i2c2.writeto(addr, data)
+        
 def pwmw(data, ch):
     if Pwm_enabled:
         vgmpico.play(data, ch)
@@ -63,11 +65,11 @@ def playvgmdata(vgm_data):
         if vgm_command == 0xA0: # PSG
             pwmw(vgm_data[Read_pointer+1], vgm_data[Read_pointer+2])
             if vgm_data[Read_pointer+1] < 0x80:
-                i2cw(0x50, vgm_data[Read_pointer+1:Read_pointer+3])
+                i2cw(1, 0x50, vgm_data[Read_pointer+1:Read_pointer+3])
             else:
                 buff[0] = vgm_data[Read_pointer+1] - 0x80
                 buff[1] = vgm_data[Read_pointer+2]
-                i2cw(0x51, buff)
+                i2cw(2, 0x50, buff)
             Read_pointer += 3
         elif vgm_command == 0xD2: # Konami SSC
             if vgm_data[Read_pointer+1] == 0:
@@ -79,7 +81,7 @@ def playvgmdata(vgm_data):
             else:
                 buff[0] = 0xAF
             buff[1] = vgm_data[Read_pointer+3]
-            i2c2.writeto(0x51, buff)
+            i2cw(1, 0x51, buff)
             Read_pointer += 4
         elif vgm_command == 0x61:
             sample_wait = int.from_bytes(vgm_data[Read_pointer+1:Read_pointer+3], 'little')
@@ -112,9 +114,12 @@ def playvgmdata(vgm_data):
     muteall()
 
 # I2Cに使うピンを初期化
-if Scc_enabled:
-    i2c1 = I2C(0, scl=Pin(I2c1_pinscl), sda=Pin(I2c1_pinsda), freq=I2c_freq)
-    i2c2 = I2C(1, scl=Pin(I2c2_pinscl), sda=Pin(I2c2_pinsda), freq=I2c_freq)
+i2c1 = I2C(0, scl=Pin(I2c1_pinscl), sda=Pin(I2c1_pinsda), freq=I2c_freq)
+if i2c1.scan():
+    Scc_enabled += 1
+i2c2 = I2C(1, scl=Pin(I2c2_pinscl), sda=Pin(I2c2_pinsda), freq=I2c_freq)
+if i2c2.scan():
+    Scc_enabled += 2
 
 # PWMに使うピンを初期化
 if Pwm_enabled:
