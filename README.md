@@ -1,6 +1,6 @@
 # vgmpico
 [Raspberry PICO](https://www.switch-science.com/catalog/6900/)向けの[VGMファイル](https://www.jpedia.wiki/blog/en/VGM_(file_format))簡易プレイヤーです。<br>
-Pico単体で音を鳴らす機能と、SSC(SoundCoretexChip)を鳴らす機能の２つを併せ持っています。<br>
+Pico単体で音を鳴らす機能と、SSC(SoundCoretexChip)を鳴らす機能の２つを併せ持っています。(併用はできません)<br>
 
 ## 1.PSG(AY-3-8910やYMZ294)2個向けに作られたVGMファイルをPWMで鳴らすことが出来ます。<br>
 ### 使うもの
@@ -32,7 +32,7 @@ Pwm_pin = 27 (スピーカー(+)を接続するピン)<br>
  - ジャンパ線適宜
 ### 設定
 main.pyの以下の行を変更します<br>
-Scc_enabled (Trueにすると有効)<br>
+Pwm_enabled (併用はできないためFalseとします。)<br>
 ### つなぎ方
 1.[I2Cで制御できる80円のPSG互換チップで遊ぼう](https://qiita.com/toyoshim/items/22a173d267f3c90fe36f)を基に、LPC810にSoundCoretexLPCを焼きます。<br>
 2.Pico１個とLPC810２個をブレッドボードに刺します。<br>
