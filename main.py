@@ -1,4 +1,4 @@
-# vgmpico: Pico Vgmplayer for "SoundCortexChip by Toyoshima-san" and PwmPSG
+# vgmpico: Pico Vgmplayer for "SoundCortexChip by Toyoshima-san" and PwmPSG v1.0
 # Copyright 2022, Layer8 https://twitter.com/layer812
 # Licensed under the Apache License, Version 2.0
 from machine import Pin, I2C
@@ -6,17 +6,19 @@ import vgmpico
 import time, os
 import rp2
 
+#PWMでPSG等を鳴らす設定
+Pwm_enabled = False # PWMを有効にするとSccは使えなくなります。
+Pwm_pin1 = 26  #スピーカの+ピンを繋ぐGPIOピン番号 -1にすると無効
+Pwm_pin2 = -1  #スピーカの+ピンを繋ぐGPIOピン番号 -1にすると無効
+
 #SoundCoretexChipを鳴らす設定
-Scc_enabled = 0  # SCCは繋がっていれば使います
+Scc_enabled = 0  # PWMと同時には使えません
 I2c1_pinsda = 0  # PSG1用のSDA向けGPIO 物理1ピン
 I2c1_pinscl = 1  # PSG1用のSCL向けGPIO 物理2ピン
 I2c2_pinsda = 2  # PSG2個め or SSC用のSDA向けGPIO 物理4ピン
 I2c2_pinscl = 3  # PSG2個め or SSC用のSCL向けGPIO 物理5ピン
 
-#PWMでPSG等を鳴らす設定
-Pwm_enabled = True
-Pwm_pin1 = 26  #スピーカの+ピンを繋ぐGPIOピン番号 -1にすると無効
-Pwm_pin2 = 27  #スピーカの+ピンを繋ぐGPIOピン番号 -1にすると無効
+
 
 I2c_freq = 3000000 #I2Cの周波数
 Sample_delay = 22676 # 1000サンプル ≠ 22676マイクロ秒 (1Msec/44.1K sample)
@@ -124,6 +126,7 @@ if i2c2.scan():
 # PWMに使うピンを初期化
 if Pwm_enabled:
     vgmpico.init(Pwm_pin1, Pwm_pin2)
+    Scc_enabled = 0
 
 #main.pyと同じディレクトリにあるvgmファイルを全部再生
 for file in os.listdir('/'):
