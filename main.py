@@ -50,9 +50,9 @@ def readvgmheader(data):
 
 def muteall():
     vgmpico.mute(0,0)
-    i2cw(0x51, bytearray([0xAF,0x00]))
-    i2cw(0x50, bytearray([0x07, 0x3F]))
-    i2cw(0x50, bytearray([0x07, 0x3F])) 
+    i2cw(1, 0x51, bytearray([0xAF,0x00]))
+    i2cw(2, 0x50, bytearray([0x07, 0x3F]))
+    i2cw(1, 0x50, bytearray([0x07, 0x3F])) 
 
 def playvgmdata(vgm_data):
     global Read_pointer, Loop_offset, Num_loops, Sample_delay
