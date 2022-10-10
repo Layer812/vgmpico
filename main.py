@@ -7,32 +7,32 @@ import time, os
 import rp2
 
 #PWMでPSG等を鳴らす設定
-Pwm_enabled = False # PWMを有効にするとSccは使えなくなります。
+Pwm_enabled = False # PWMを使う場合True / SCCを使う場合はFalse
 Pwm_pin1 = 26  #スピーカの+ピンを繋ぐGPIOピン番号 -1にすると無効
 Pwm_pin2 = -1  #スピーカの+ピンを繋ぐGPIOピン番号 -1にすると無効
 
 #SoundCoretexChipを鳴らす設定
-Scc_enabled = 0  # PWMと同時には使えません
 I2c1_pinsda = 0  # PSG1用のSDA向けGPIO 物理1ピン
 I2c1_pinscl = 1  # PSG1用のSCL向けGPIO 物理2ピン
 I2c2_pinsda = 2  # PSG2個め or SSC用のSDA向けGPIO 物理4ピン
 I2c2_pinscl = 3  # PSG2個め or SSC用のSCL向けGPIO 物理5ピン
 
 
-
 I2c_freq = 3000000 #I2Cの周波数
 Sample_delay = 22676 # 1000サンプル ≠ 22676マイクロ秒 (1Msec/44.1K sample)
 Num_loops = 1     # ループは1回 / 0にするとループしない
+Buff_size = 130256 #大きくしすぎるとメモリアロケーションに失敗します
 
 #グローバル変数です　（*´∀｀*）
 Read_pointer = 0
 Loop_offset = 0
 Clock_value = 0
+Scc_count = 0
 
 def i2cw(port, addr, data):
-    if port == 1 & Scc_enabled > 0:
+    if port == 1 & Scc_count > 0:
         i2c1.writeto(addr, data)
-    elif port == 2 & Scc_enabled > 1:
+    elif port == 2 & Scc_count > 1:
         i2c2.writeto(addr, data)
         
 def pwmw(data, ch):
@@ -105,6 +105,9 @@ def playvgmdata(vgm_data):
             continue
         else:
             break;
+        if Read_pointer > Buff_size - 16:
+            playcounter -= 1
+            Read_pointer = Loop_offset
         if sample_wait > 0:
             #サンプル分の時間が経過するまで待つ
             delay_time = int(sample_wait * Sample_delay / 1000)
@@ -118,22 +121,22 @@ def playvgmdata(vgm_data):
 # I2Cに使うピンを初期化
 i2c1 = I2C(0, scl=Pin(I2c1_pinscl), sda=Pin(I2c1_pinsda), freq=I2c_freq)
 if i2c1.scan():
-    Scc_enabled += 1
+    Scc_count += 1
 i2c2 = I2C(1, scl=Pin(I2c2_pinscl), sda=Pin(I2c2_pinsda), freq=I2c_freq)
 if i2c2.scan():
-    Scc_enabled += 2
+    Scc_count += 2
 
 # PWMに使うピンを初期化
 if Pwm_enabled:
     vgmpico.init(Pwm_pin1, Pwm_pin2)
-    Scc_enabled = 0
+    Scc_count = 0
 
 #main.pyと同じディレクトリにあるvgmファイルを全部再生
 for file in os.listdir('/'):
     if ".vgm" not in file:
         continue
     with open(file, 'rb') as fr:
-        vgm_data = fr.read()
+        vgm_data = fr.read(Buff_size)
         if readvgmheader(vgm_data):
             continue
         playvgmdata(vgm_data)
