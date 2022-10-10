@@ -32,11 +32,16 @@ Pwm_pin = 27 (スピーカー(+)を接続するピン)<br>
  - ジャンパ線適宜
 ### 設定
 main.pyの以下の行を変更します<br>
-Pwm_enabled (併用はできないためFalseとします。)<br>
+Pwm_enabled = False (SCCを有効とする際は、Falseとします。)<br>
+SCCと接続したPico側のGPIO(I2C接続用のSDA/SCL)を記載します、以下の物理接続に合わせています。<br>
+I2c1_pinsda = 0<br>
+I2c1_pinscl = 1<br>
+I2c2_pinsda = 2<br>
+I2c2_pinscl = 3<br>
 ### つなぎ方
 1.[I2Cで制御できる80円のPSG互換チップで遊ぼう](https://qiita.com/toyoshim/items/22a173d267f3c90fe36f)を基に、LPC810にSoundCoretexLPCを焼きます。<br>
-2.Pico１個とLPC810２個をブレッドボードに刺します。<br>
-3.以下の様に物理結線を行います。<br> 
+2.Pico１個とLPC810をブレッドボードに刺します。<br>
+3.以下の様に物理結線を行います。(例は２個接続しています。)<br> 
  - Picoの3.3V OUT (物理36ピン)をLPC810の6ピンに接続
  - PicoのGND (物理38ピンなど)をLPC810の7ピンに接続
  - PicoのGP0 (物理1ピン)を1個目のLPC810の8ピンに接続、併せて2～10KΩの抵抗経由で3.3Vにも接続
