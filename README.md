@@ -1,8 +1,8 @@
 # vgmpico
 [Raspberry PICO](https://www.switch-science.com/catalog/6900/)向けの[VGMファイル](https://www.jpedia.wiki/blog/en/VGM_(file_format))簡易プレイヤーです。<br>
-Pico単体で音を鳴らす機能と、SSC(SoundCoretexChip)を鳴らす機能の２つを併せ持っています。(併用はできません)<br>
+Pico内蔵のPWMでvgmを鳴らす機能と、SSC(SoundCoretexChip)でvgmを鳴らす機能の２つを併せ持っています。(併用はできません)<br>
 
-## 1.PSG(AY-3-8910やYMZ294)2個向けに作られたVGMファイルをPWMで鳴らすことが出来ます。<br>
+## 1.Pico内蔵のPWMでvgmを鳴らす。(AY-3-8910 or YM2419向けvgm)<br>
 ### 使うもの
  - Raspbery pico(以降Pico) 1個
  - ブレッドボード
@@ -21,7 +21,7 @@ Pwm_pin = 27 (スピーカー(+)を接続するピン)<br>
 ![接続図](https://user-images.githubusercontent.com/111331376/189489764-80342a3c-8d08-4ac3-8800-2fcdb988d3fd.png)
 
 
-## 2.PSG(AY-3-8910やYMZ294)2個か、PSG１個とSSC(K051649)１個向けに作られたVGMファイルを鳴らすことができます。<br>
+## 2.SSC(SoundCoretexChip)でvgmを鳴らす。(AY-3-8910 or YM2419向け or Konami SCC向け vgm)<br>
 音源チップとして[とよしまさん](https://twitter.com/toyoshim)が作られた[SoundCortexLPC](https://github.com/toyoshim/SoundCortexLPC)を使います。<br>
 ### 使うもの
  - Raspbery pico(以降Pico) 1個
@@ -46,7 +46,6 @@ Pwm_enabled (併用はできないためFalseとします。)<br>
  - イヤホンやアンプのGND端子にPicoのGND (物理38ピンなど)を接続
  - イヤホンやアンプのAudio端子に1個目と2個目のLPC810の2ピンを接続、100Ω以下の抵抗を経由すると良い説有
 ![接続図](https://user-images.githubusercontent.com/111331376/192802217-1ed78231-4e38-4734-90ca-1302198bd58a.png)
-
 
 ## 使い方(共通)
  - VGMファイルがvgz形式の場合、7zipやgzipなどで展開しvgm形式にする
